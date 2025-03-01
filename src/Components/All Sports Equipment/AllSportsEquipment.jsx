@@ -1,24 +1,16 @@
+import { useLoaderData } from "react-router-dom";
+import SportsCard from "./SportsCard";
+
 const AllSportsEquipment = () => {
+  const stor_data = useLoaderData();
+
   return (
-    <div>
+    <div className="container mx-auto">
       <p>All Sports Equipment</p>
-      <div className="card bg-base-100 w-96 shadow-sm">
-        <figure>
-          <img
-            src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-            alt="Shoes"
-          />
-        </figure>
-        <div className="card-body">
-          <h2 className="card-title">Card Title</h2>
-          <p>
-            A card component has a figure, a body part, and inside body there
-            are title and actions parts
-          </p>
-          <div className="card-actions justify-end">
-            <button className="btn btn-primary">Buy Now</button>
-          </div>
-        </div>
+      <div className="grid md:grid-cols-4 gap-6">
+        {stor_data.map((sports) => (
+          <SportsCard sports={sports} key={sports?._id}></SportsCard>
+        ))}
       </div>
     </div>
   );

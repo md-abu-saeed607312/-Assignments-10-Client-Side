@@ -1,9 +1,10 @@
 import { useContext, useState } from "react";
 import { FaGoogle } from "react-icons/fa6";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { TheContext } from "../Auth Provider/AuthProvider";
 import { toast } from "react-toastify";
 const Login = () => {
+  const locationUsed=useLocation()
   const notify = () => toast.success('Successfully Login');
   const notifyerror = () => toast.error('Login fail');
   const { signIn, setUser, signupWithGoogle} = useContext(TheContext);
@@ -20,7 +21,7 @@ const Login = () => {
         const user = result.user;
         setUser(user);
         e.target.reset();
-        naviget("/");
+        naviget(locationUsed?.state?locationUsed.state:"/");
         notify()
 
       })

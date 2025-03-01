@@ -1,46 +1,53 @@
-// const AddEquipment = () => {
-//     return (
-//         <div className="container mx-auto">
-//             <p>Add Equipment</p>
-//         </div>
-//     );
-// };
-
-import { useState } from "react";
+import Swal from "sweetalert2";
 
 const AddEquipment = () => {
-  const [formData, setFormData] = useState({
-    image: "",
-    itemName: "",
-    categoryName: "",
-    description: "",
-    price: "",
-    rating: "",
-    customization: "",
-    processingTime: "",
-    stockStatus: "",
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form Data Submitted:", formData);
-    alert("Product added successfully!");
-    setFormData({
-      image: "",
-      itemName: "",
-      categoryName: "",
-      description: "",
-      price: "",
-      rating: "",
-      customization: "",
-      processingTime: "",
-      stockStatus: "",
-    });
+
+    const image = e.target.image.value;
+    const itemName = e.target.itemName.value;
+    const categoryName = e.target.categoryName.value;
+    const description = e.target.description.value;
+    const price = parseFloat(e.target.price.value);
+    const rating = e.target.rating.value;
+    const customization = e.target.customization.value;
+    const processingTime = e.target.processingTime.value;
+    const stockStatus = e.target.stockStatus.value;
+
+    const sarverData = {
+      processingTime,
+      customization,
+      rating,
+      price,
+      description,
+      categoryName,
+      itemName,
+      image,
+      stockStatus,
+    };
+
+    console.log(sarverData);
+
+    e.target.reset();
+
+    fetch("http://localhost:5000/datastor", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(sarverData),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.insertedId) {
+          Swal.fire({
+            title: "success",
+            text: "Do you want to continue",
+            icon: "success",
+            confirmButtonText: "Cool",
+          });
+        }
+      });
   };
 
   return (
@@ -52,8 +59,6 @@ const AddEquipment = () => {
           <input
             type="text"
             name="image"
-            value={formData.image}
-            onChange={handleChange}
             className="w-full p-2 border rounded"
             placeholder="Enter image URL"
             required
@@ -65,8 +70,6 @@ const AddEquipment = () => {
           <input
             type="text"
             name="itemName"
-            value={formData.itemName}
-            onChange={handleChange}
             className="w-full p-2 border rounded"
             placeholder="Enter item name"
             required
@@ -75,23 +78,27 @@ const AddEquipment = () => {
 
         <div>
           <label className="block text-sm font-medium">Category Name:</label>
-          <input
-            type="text"
+          <select
             name="categoryName"
-            value={formData.categoryName}
-            onChange={handleChange}
             className="w-full p-2 border rounded"
-            placeholder="Enter category name"
             required
-          />
+          >
+            <option value="" disabled selected>
+              Select a category
+            </option>
+            <option value="Fitness Equipment">Fitness Equipment</option>
+            <option value="Outdoor Gear">Outdoor Gear</option>
+            <option value="Team Sports">Team Sports</option>
+            <option value="Racket Sports">Racket Sports</option>
+            <option value="Water Sports">Water Sports</option>
+            <option value="Water Sports">Size options</option>
+          </select>
         </div>
 
         <div>
           <label className="block text-sm font-medium">Description:</label>
           <textarea
             name="description"
-            value={formData.description}
-            onChange={handleChange}
             className="w-full p-2 border rounded"
             placeholder="Enter product description"
             required
@@ -103,10 +110,9 @@ const AddEquipment = () => {
           <input
             type="number"
             name="price"
-            value={formData.price}
-            onChange={handleChange}
             className="w-full p-2 border rounded"
             placeholder="Enter price"
+            step="any"  // Allows any decimal values
             required
           />
         </div>
@@ -116,8 +122,6 @@ const AddEquipment = () => {
           <input
             type="number"
             name="rating"
-            value={formData.rating}
-            onChange={handleChange}
             className="w-full p-2 border rounded"
             min="1"
             max="5"
@@ -131,8 +135,6 @@ const AddEquipment = () => {
           <input
             type="text"
             name="customization"
-            value={formData.customization}
-            onChange={handleChange}
             className="w-full p-2 border rounded"
             placeholder="Enter customization details"
           />
@@ -145,8 +147,6 @@ const AddEquipment = () => {
           <input
             type="number"
             name="processingTime"
-            value={formData.processingTime}
-            onChange={handleChange}
             className="w-full p-2 border rounded"
             placeholder="Enter delivery time"
             required
@@ -160,8 +160,6 @@ const AddEquipment = () => {
           <input
             type="number"
             name="stockStatus"
-            value={formData.stockStatus}
-            onChange={handleChange}
             className="w-full p-2 border rounded"
             placeholder="Enter available quantity"
             required

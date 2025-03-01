@@ -2,11 +2,15 @@
 
 import { useContext } from "react";
 import { TheContext } from "../Auth Provider/AuthProvider";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { BarLoader } from "react-spinners";
 
 const PrivetRoute = ({children}) => {
     const{loding , user}=useContext(TheContext)
+    const locationUsed=useLocation()
+
+
+
 
     if(loding){
         return <BarLoader color="rgba(255, 0, 0, 1)" />
@@ -17,7 +21,9 @@ const PrivetRoute = ({children}) => {
     }
     return (
         <div>
-            <Navigate to="/login"></Navigate>
+            <Navigate to="/login"
+            state={locationUsed.pathname}
+            ></Navigate>
         </div>
     );
 };
