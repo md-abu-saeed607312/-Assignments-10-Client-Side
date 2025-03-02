@@ -12,7 +12,6 @@ import AddEquipment from "../Components/Add Equipment/AddEquipment";
 import MyEquipment from "../Components/My Equipment List/MyEquipment ";
 import PrivetRoute from "../Privet Route/PrivetRoute";
 import ProductDetailss from "../Components/Product Detailss/ProductDetailss";
-
 import Fitness from "../Components/Product All Category/Fitness";
 import OutdoorGear from "../Components/Product All Category/OutdoorGear";
 import TeamSports from "../Components/Product All Category/TeamSports";
@@ -27,6 +26,7 @@ import TeamSports from "../Components/Product All Category/TeamSports";
         {
           path:"/",
           element:<Home></Home>,
+          loader:()=>fetch("http://localhost:5000/all-data")
 
         },
         {
@@ -52,12 +52,25 @@ import TeamSports from "../Components/Product All Category/TeamSports";
         },
         {
           path:"/myequipment",     
-          element:<PrivetRoute><MyEquipment></MyEquipment></PrivetRoute>
+          element:<PrivetRoute><MyEquipment></MyEquipment></PrivetRoute> ,
+          loader: async () => {
+    
+          // JSON রূপে ডেটা সংগ্রহ
+          // const myequipment = await myequipmentRes.json();
+          // const allData = await allDataRes.json();
+          // উভয় ডেটা ফেরত দেওয়া
+          }
         },
         {
           path:"/product/:id", 
-          loader:({params})=>fetch(`http://localhost:5000/product/${params.id}`),  
-          element:<PrivetRoute><ProductDetailss></ProductDetailss></PrivetRoute>
+          element:<PrivetRoute><ProductDetailss></ProductDetailss></PrivetRoute>,
+          loader:async({params})=>{
+            const dainamic=await fetch(`http://localhost:5000/product/${params.id}`)
+            const myequipmentRes = await fetch("http://localhost:5000/myequipment")
+            const allDataRes = await fetch("http://localhost:5000/all-data")
+
+            return { dainamic,myequipmentRes,allDataRes};
+          }
         }, 
         {
           path:"/fitness", 
