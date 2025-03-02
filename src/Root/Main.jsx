@@ -53,23 +53,19 @@ import TeamSports from "../Components/Product All Category/TeamSports";
         {
           path:"/myequipment",     
           element:<PrivetRoute><MyEquipment></MyEquipment></PrivetRoute> ,
-          loader: async () => {
-    
-          // JSON রূপে ডেটা সংগ্রহ
-          // const myequipment = await myequipmentRes.json();
-          // const allData = await allDataRes.json();
-          // উভয় ডেটা ফেরত দেওয়া
-          }
+          loader: () =>fetch("http://localhost:5000/myequipment")
         },
         {
           path:"/product/:id", 
           element:<PrivetRoute><ProductDetailss></ProductDetailss></PrivetRoute>,
-          loader:async({params})=>{
-            const dainamic=await fetch(`http://localhost:5000/product/${params.id}`)
-            const myequipmentRes = await fetch("http://localhost:5000/myequipment")
-            const allDataRes = await fetch("http://localhost:5000/all-data")
+          loader: async ({ params }) => {
+            const equipmentDetails = await fetch(`http://localhost:5000/product/${params.id}`);
+            const myequipmentRes = await fetch("http://localhost:5000/myequipment");
+      
+            const singleequipmentDetails = await equipmentDetails.json();
+            const myequipments = await myequipmentRes.json();
 
-            return { dainamic,myequipmentRes,allDataRes};
+            return { singleequipmentDetails, myequipments};
           }
         }, 
         {

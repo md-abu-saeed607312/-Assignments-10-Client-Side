@@ -2,16 +2,13 @@ import { Star } from "lucide-react";
 import { useLoaderData } from "react-router-dom";
 
 const MyEquipment = () => {
-  const { myequipment, allData } = useLoaderData();
+  const myequipment= useLoaderData();
 
   
-  const myequipmentData = myequipment.filter((e) =>
-    allData.some((data) => data.itemName === e.itemName)
-  );
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      {myequipmentData.map((equipment) => {
+      {myequipment.map((equipment) => {
         const {
           _id, // Unique identifier for key
           image,
