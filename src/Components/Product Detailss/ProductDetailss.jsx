@@ -2,16 +2,17 @@ import { Star } from "lucide-react";
 import { useContext, useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import { TheContext } from "../../Auth Provider/AuthProvider";
+import { toast } from "react-toastify";
 
 const ProductDetails = () => {
 
+   const notify = () => toast.success('Product Add Successfully ');
+   const notifyError = () => toast.error('This Product is already in your Card"');
   const { user } = useContext(TheContext); // ব্যবহারকারীর তথ্য আনছে
   const { singleequipmentDetails, myequipments } = useLoaderData(); // লোড হওয়া ডাটা নিচ্ছে
 
 
-
   const [fav, setFav] = useState([]); // ফেভারিট লিস্ট স্টেট
-
 
 
   //-------------------------------- Event Handeler Function------------------------------ 
@@ -28,7 +29,7 @@ const ProductDetails = () => {
 
     // একই Genre-এর পণ্য আগে `fav` এ আছে কিনা চেক করা হচ্ছে
     const productExistsInFav = fav.find(
-      (product) => product.Genre === singleEquipment.Genre
+      (product) => product._id === singleEquipment._id
     );
 
 
@@ -44,15 +45,17 @@ const ProductDetails = () => {
         })
           .then((res) => res.json())
           .then((data) => {
+            notify()
             console.log("Added to cart:", data);
             setFav((prev) => [...prev, singleEquipment]); // ডাটাবেজে সফলভাবে সেভ হলে স্টেটে অ্যাড করুন
           })
           .catch((error) => console.error("Error:", error));
       } else {
-        alert("This equipment is already in your cart.");
+        toast("This equipment is already in your favorites.");
+        
       }
     } else {
-      alert("This equipment is already in your favorites.");
+      notifyError()
     }
   };
 

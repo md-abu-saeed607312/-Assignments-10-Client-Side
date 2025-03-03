@@ -23,8 +23,7 @@ const SportsCard = ({ sports }) => {
           alt={itemName}
           className="w-full h-48 object-cover rounded-xl"
         />
-      </Link>
-      <div className="mt-4">
+         <div className="mt-4">
         <h2 className="text-xl font-bold">{itemName}</h2>
         <p className="text-sm text-gray-500">Category: {categoryName}</p>
         <p className="mt-2 text-gray-700">{description}</p>
@@ -51,10 +50,11 @@ const SportsCard = ({ sports }) => {
         <div className="mt-4 flex justify-between items-center">
           <span className="text-lg font-bold">Price: {price}$</span>
           <button className="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700">
-            Add to Cart
+          View details
           </button>
         </div>
       </div>
+      </Link>
     </div>
   );
 };
