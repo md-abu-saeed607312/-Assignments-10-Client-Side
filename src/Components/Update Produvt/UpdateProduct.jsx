@@ -45,7 +45,6 @@ const navigate=useNavigate()
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("Server Response:", data);
         if (data.modifiedCount > 0) {
           Swal.fire({
             title: "Success!",
