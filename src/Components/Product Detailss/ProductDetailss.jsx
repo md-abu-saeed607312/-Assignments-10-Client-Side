@@ -1,26 +1,24 @@
 import { Star } from "lucide-react";
 import { useContext, useState } from "react";
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import { TheContext } from "../../Auth Provider/AuthProvider";
 import { toast } from "react-toastify";
 
 const ProductDetails = () => {
-
-   const notify = () => toast.success('Product Add Successfully ');
-   const notifyError = () => toast.error('This Product is already in your Card"');
+  const notify = () => toast.success("Product Add Successfully ");
+  const notifyError = () =>
+    toast.error('This Product is already in your Card"');
   const { user } = useContext(TheContext); // ব্যবহারকারীর তথ্য আনছে
   const { singleequipmentDetails, myequipments } = useLoaderData(); // লোড হওয়া ডাটা নিচ্ছে
 
-
   const [fav, setFav] = useState([]); // ফেভারিট লিস্ট স্টেট
 
-
-  //-------------------------------- Event Handeler Function------------------------------ 
+  //-------------------------------- Event Handeler Function------------------------------
   const handelCard = (itemName) => {
-
-
-
-    const singleEquipment = { ...singleequipmentDetails, userEmail: user.email }; // ইউজারের ইমেইল সংযোজন
+    const singleEquipment = {
+      ...singleequipmentDetails,
+      userEmail: user.email,
+    }; // ইউজারের ইমেইল সংযোজন
 
     // চেক করা হচ্ছে যে একই ব্যবহারকারীর কাছে এটি আগে আছে কিনা
     const isExist = myequipments.some(
@@ -32,10 +30,10 @@ const ProductDetails = () => {
       (product) => product._id === singleEquipment._id
     );
 
-
-
-    if (!productExistsInFav) { // পণ্য চেক করা হচ্ছে 
-      if (!isExist) {         // User চেক করা হচ্ছে  
+    if (!productExistsInFav) {
+      // পণ্য চেক করা হচ্ছে
+      if (!isExist) {
+        // User চেক করা হচ্ছে
         fetch("http://localhost:5000/myequipment", {
           method: "POST",
           headers: {
@@ -45,23 +43,23 @@ const ProductDetails = () => {
         })
           .then((res) => res.json())
           .then((data) => {
-            notify()
+            notify();
             console.log("Added to cart:", data);
             setFav((prev) => [...prev, singleEquipment]); // ডাটাবেজে সফলভাবে সেভ হলে স্টেটে অ্যাড করুন
           })
           .catch((error) => console.error("Error:", error));
       } else {
         toast("This equipment is already in your favorites.");
-        
       }
     } else {
-      notifyError()
+      notifyError();
     }
   };
 
   // ডাটা ডিকন্সট্রাকচার
   const {
     image,
+    _id,
     itemName,
     categoryName,
     rating,
@@ -115,13 +113,14 @@ const ProductDetails = () => {
 
         {/* বাটনস */}
         <div className="flex gap-6">
-          <button className="mt-3 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
-            Update Product
-          </button>
-
+          <Link to={`/update-product/${_id}`}>
+            <div className="mt-3  bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-blue-700">
+              Update Product
+            </div>
+          </Link>
           <button
             onClick={() => handelCard(itemName)}
-            className="mt-3 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
+            className="mt-3  bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-blue-700"
           >
             Add to Cart
           </button>
@@ -132,5 +131,3 @@ const ProductDetails = () => {
 };
 
 export default ProductDetails;
-
-

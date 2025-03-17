@@ -15,6 +15,7 @@ import ProductDetailss from "../Components/Product Detailss/ProductDetailss";
 import Fitness from "../Components/Product All Category/Fitness";
 import OutdoorGear from "../Components/Product All Category/OutdoorGear";
 import TeamSports from "../Components/Product All Category/TeamSports";
+import UpdateProduct from "../Components/Update Produvt/UpdateProduct";
 
 
   const router = createBrowserRouter([
@@ -82,6 +83,11 @@ import TeamSports from "../Components/Product All Category/TeamSports";
           path:"/teamsports", 
           loader:()=>fetch("http://localhost:5000/all-data"),
           element:<TeamSports></TeamSports>
+        },
+        {
+          path:"/update-product/:id", 
+          loader:({params})=>fetch(`http://localhost:5000/product/${params.id}`),
+          element:<PrivetRoute><UpdateProduct></UpdateProduct></PrivetRoute>
         }
         
       ],
